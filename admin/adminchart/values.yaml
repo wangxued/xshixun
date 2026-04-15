@@ -9,7 +9,7 @@ NameSpace: test06
 Quota:
   CPU: "72"
   Memory: 250Gi
-  GPU: "1"
+  GPU: "8"
   Storage: 2T
   Pods: "10"
 
