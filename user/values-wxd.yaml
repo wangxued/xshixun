@@ -3,8 +3,8 @@
 # Declare variables to be passed into your templates.
 
 ########### 必须要写的部分 ###########
-NameSpace: s0837   # 自己的namespace （同用户名）
-BaseName: pytorch   # 任务的基本名字，建议写任务描述，例如pytorch
+NameSpace: devops-wang   # 自己的namespace （同用户名）
+BaseName: testing   # 任务的基本名字，建议写任务描述，例如pytorch
 ContainerImage: harbor.xa.xshixun.com:7443/llm-course/lab:v2   # 镜像名称，默认为 harbor.xa.xshixun.com:7443/xuw/pytorch:v1.5，或者见README的说明
 GPU: stuff-H200 # 目前只有这一个选项
 
@@ -33,14 +33,13 @@ ShmSize: 16Gi
 #   mountPath: /data                   # Pod 内挂载路径，默认 /data
 #   readOnly: false
 
-########### 共享数据挂载 ###########
 # 额外挂载公共模型权重目录，默认关闭；需要读取公共模型时改为 enabled: true
 # 开启后容器内路径为 /data/share/models，例如：
 #   /data/share/models/GLM-4.7-FP8-dynamic
-SharedModels:
-  enabled: false
-  hostPath: /mnt/gpfs2/hqzy-mg3226/share/public/models
-  mountPath: /data/share/models
+# SharedModels:
+#   enabled: false
+#   hostPath: /mnt/gpfs2/hqzy-mg3226/share/public/models  # 公共模型权重目录路径
+#   mountPath: /data/share/models                         # 容器内挂载路径，默认 /data/share/models
 
 ########### 高级配置 ###########
 # ExtraPort: 7860

@@ -36,6 +36,14 @@
 {{ $models_data_mount := $models_data_pvc.mountPath | default "/data" }}
 {{ $models_data_ro := $models_data_pvc.readOnly | default false }}
 
+{{ $shared_models := .Values.SharedModels | default (dict) }}
+{{ $shared_models_enabled := false }}
+{{- if hasKey $shared_models "enabled" }}
+{{ $shared_models_enabled = $shared_models.enabled }}
+{{- end }}
+{{ $shared_models_host_path := $shared_models.hostPath | default "/mnt/gpfs2/hqzy-mg3226/share/public/models" }}
+{{ $shared_models_mount_path := $shared_models.mountPath | default "/data/share/models" }}
+
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -124,6 +132,11 @@ spec:
         - name: ssdshare # 与下面volumes的名字对应
           mountPath: /ssdshare # 本地的挂载点
           readOnly: true
+{{ if $shared_models_enabled }}
+        - name: shared-models
+          mountPath: {{ $shared_models_mount_path }}
+          readOnly: true
+{{ end }}
 {{ if not $noGpfsShare }}
         - name: gpfsshare # 与下面volumes的名字对应
           mountPath: /gpfs-share # 本地的挂载点
@@ -166,6 +179,12 @@ spec:
         hostPath:
           path: /mnt/gpfs2/hqzy-mg3226/ssdshare # directory location on host
           type: Directory # this field is optional
+{{ if $shared_models_enabled }}
+      - name: shared-models
+        hostPath:
+          path: {{ $shared_models_host_path }}
+          type: Directory
+{{ end }}
 
 {{ if not $noGpfsShare }}
       - name: gpfsshare
