@@ -242,6 +242,36 @@ NoGPFSSHARE: true
 
 开启后不挂载 `/gpfs-share`。
 
+### 指定 CUDA 版本节点（污点 + 定向调度）
+
+当集群内存在升级节点（例如 `n91` 已打标签 `cuda-major=13` 并带污点 `cuda-major=13:NoSchedule`）时，可在 values 中增加：
+
+```yaml
+NodeSelector:
+  cuda-major: "13"
+
+Tolerations:
+  - key: "cuda-major"
+    operator: "Equal"
+    value: "13"
+    effect: "NoSchedule"
+
+Affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values: ["n91"]
+```
+
+说明：
+
+- `NodeSelector`：筛到 CUDA13 节点池。
+- `Tolerations`：允许 Pod 调度到 `cuda-major=13:NoSchedule` 的节点。
+- `Affinity`：进一步锁定到指定节点（如 `n91`）。若只需节点池级调度，可不写 `Affinity`。
+
 ## 完整示例
 
 ```yaml

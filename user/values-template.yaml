@@ -50,3 +50,20 @@ SharedModels:
 # UseIB: true # 是否使用IB，默认不使用，如果使用，需要在启动时指定UseIB=true
 # noGpfsShare: true
 # hostNetwork: true
+#
+# CUDA 13.x 专用节点调度（示例：仅调度到 n91）
+# NodeSelector:
+#   cuda-major: "13"
+# Tolerations:
+#   - key: "cuda-major"
+#     operator: "Equal"
+#     value: "13"
+#     effect: "NoSchedule"
+# Affinity:
+#   nodeAffinity:
+#     requiredDuringSchedulingIgnoredDuringExecution:
+#       nodeSelectorTerms:
+#         - matchExpressions:
+#             - key: kubernetes.io/hostname
+#               operator: In
+#               values: ["n91"]
