@@ -7,7 +7,9 @@
 | 集群内上传地址 | `https://data-minio-hl.data-export-minio.svc.k8s.xa.cluster:9000` |
 | 本机下载地址 | `https://minio-data-xa.xshixun.cn:7443` |
 | Bucket | `export` |
+| 路径规范 | `export/<用户名>/<任务名>/…` |
 | 数据保留 | 14 天自动清理 |
+| 存储总量 | 10Ti |
 
 账号由管理员单独发放：
 
